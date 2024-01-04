@@ -1,0 +1,110 @@
+<template>
+  <div class="t_adaptive_page">
+    <div
+      :style="{ width: isShow('leftContent') ? `${leftWidth}px` : '0px' }"
+      v-if="isShow('leftContent')"
+      class="left_content"
+    >
+      <div class="left_tree">
+        <slot name="leftContent" />
+      </div>
+    </div>
+    <t-layout-page class="right_content">
+      <t-layout-page-item class="table_search">
+        <t-query-condition v-bind="$attrs" ref="TQueryConditionPage">
+          <template v-for="(index, name) in slots" #[name]="data">
+            <slot :name="name" v-bind="data" />
+          </template>
+        </t-query-condition>
+      </t-layout-page-item>
+      <t-layout-page-item class="table_main">
+        <t-table v-bind="$attrs" ref="TTablePage">
+          <template v-for="(index, name) in slots" #[name]="data">
+            <slot :name="name" v-bind="data" />
+          </template>
+        </t-table>
+      </t-layout-page-item>
+      <slot />
+    </t-layout-page>
+  </div>
+</template>
+
+<script setup lang="ts" name="TAdaptivePage">
+import TLayoutPage from '../../layout-page/src/index.vue'
+import TLayoutPageItem from '../../layout-page-item/src/index.vue'
+import TTable from '../../table/src/index.vue'
+import TQueryCondition from '../../query-condition/src/index.vue'
+import { getCurrentInstance, onMounted, ref, useSlots } from 'vue'
+defineProps({
+  leftWidth: {
+    type: Number,
+    default: 260,
+  },
+})
+const slots = useSlots()
+// 判断是否使用漏了某个插槽
+const isShow = (name) => {
+  return Object.keys(slots).includes(name)
+}
+// 获取实例方法
+const instance: any = getCurrentInstance()
+// 获取ref
+const TQueryConditionPage: any = ref<HTMLElement | null>(null)
+const TTablePage: any = ref<HTMLElement | null>(null)
+onMounted(() => {
+  const exposedObj = {
+    ...TQueryConditionPage.value.$.exposed,
+    ...TTablePage.value.$.exposed,
+  }
+  const entries = Object.entries(exposedObj)
+  // console.log('111', entries)
+  for (const [key, value] of entries) {
+    instance.exposed[key] = value
+  }
+  // console.log(789, instance)
+})
+defineExpose({ ...instance.exposed, TQueryConditionPage, TTablePage })
+</script>
+<style lang="scss" scoped>
+.t_adaptive_page {
+  display: flex;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .left_content {
+    background: var(--el-bg-color);
+    margin: 8px;
+    margin-right: 0;
+    .left_tree {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      overflow-y: auto;
+    }
+  }
+  .right_content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .table_main {
+      flex: 1;
+      overflow-y: auto;
+      width: 100%;
+      height: 100vh;
+      .t-table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+</style>
