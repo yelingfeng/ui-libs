@@ -12,6 +12,66 @@ import { VPDemo } from '../vitepress'
 import Pandoralibs from '../../../packages'
 import '../../public/css/index.css'
 
+import * as core from 'echarts/core'
+import * as renderers from 'echarts/renderers'
+import * as charts from 'echarts/charts'
+import * as components from 'echarts/components'
+
+const { use } = core
+const { CanvasRenderer } = renderers
+const {
+  BarChart,
+  LineChart,
+  LinesChart,
+  PieChart,
+  MapChart,
+  PictorialBarChart,
+  ScatterChart,
+  GraphChart,
+  GaugeChart,
+  EffectScatterChart,
+  RadarChart,
+} = charts
+const {
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  PolarComponent,
+  AriaComponent,
+  ParallelComponent,
+  VisualMapComponent,
+  DataZoomComponent,
+  GraphicComponent,
+} = components
+
+use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  PolarComponent,
+  AriaComponent,
+  ParallelComponent,
+  VisualMapComponent,
+  DataZoomComponent,
+  GraphicComponent,
+  LegendComponent,
+  BarChart,
+  LineChart,
+  LinesChart,
+  PieChart,
+  GraphChart,
+  MapChart,
+  ScatterChart,
+  PictorialBarChart,
+  GaugeChart,
+  EffectScatterChart,
+  RadarChart,
+  CanvasRenderer,
+])
+
+
+
 export default {
   ...DefaultTheme,
   enhanceApp(ctx) {

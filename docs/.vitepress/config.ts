@@ -18,7 +18,7 @@ export default defineConfig({
         text: '安装指南',
         link: '/components/',
       },
-      { text: '基础组件', link: '/components/TSelect/base.md' },
+      { text: '组件', link: '/components/TSelect/base.md' },
       {
         text: 'GitHub地址',
         link: 'https://github.com/yelingfeng/ui-libs',
@@ -27,7 +27,7 @@ export default defineConfig({
     sidebar: {
       '/components': [
         {
-          text: '常用组件',
+          text: '基础组件',
           items: [
             { text: '下拉选择组件', link: '/components/TSelect/base.md' },
             { text: '详情组件', link: '/components/TDetail/base.md' },
@@ -38,7 +38,28 @@ export default defineConfig({
           ],
         },
         {
-          text: '复杂组件',
+          text: 'Charts',
+          items: [
+            {   text: 'Pie',
+                items: [{
+                  text: 'Pie01',
+                  link: '/components/TCharts/pie/pie01.md'
+                },
+                {
+                  text: 'Pie02',
+                  link: '/components/TCharts/pie/pie02.md'
+                }  ]
+            },
+            // { text: '下拉选择组件', link: '/components/TSelect/base.md' },
+            // { text: '详情组件', link: '/components/TDetail/base.md' },
+            // { text: 'Button组件', link: '/components/TButton/base.md' },
+            // { text: 'Radio组件', link: '/components/TRadio/base.md' },
+            // { text: '日期组件', link: '/components/TDatePicker/base.md' },
+            // { text: '步骤组件', link: '/components/TStepWizard/base.md' },
+          ],
+        },
+        {
+          text: '高阶组件',
           items: [
             {
               text: '下拉选择表格组件',

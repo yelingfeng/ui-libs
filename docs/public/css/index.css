@@ -80,3 +80,7 @@
 /* pre{
   background: transparent;
 } */
+.box-chart{
+  width:100%;
+  height:350px;
+}

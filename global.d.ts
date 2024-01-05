@@ -13,6 +13,7 @@ import TTimerBtn from './lib/timer-btn/src/index.vue'
 import TModuleForm from './lib/module-form/src/index.vue'
 import TAdaptivePage from './lib/adaptive-page/src/index.vue'
 import TDatePicker from './lib/date-picker/src/index.vue'
+import TCharts from './lib/charts/src/index.vue'
 // GlobalComponents for Volar
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
@@ -121,6 +122,7 @@ declare module '@vue/runtime-core' {
     TModuleForm: typeof TModuleForm
     TAdaptivePage: typeof TAdaptivePage
     TDatePicker: typeof TDatePicker
+    TCharts : typeof TCharts
   }
 
   interface ComponentCustomProperties {
