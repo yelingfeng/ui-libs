@@ -8,10 +8,7 @@ import type {
   UpdateOptions,
   AutoresizeProp,
 } from '../types'
-import type {
-  ChartTypes,
-  SubChartType,
-} from '../types/chart'
+import type { ChartTypes, SubChartType } from '../types/chart'
 
 export const defaultProps = {
   data: {
@@ -56,4 +53,12 @@ export const defaultProps = {
    * 二级图标类型
    */
   subChartType: String as PropType<SubChartType>,
+
+  /**
+   * 是否默认选中
+   */
+  isSelect: {
+    type: Boolean,
+    default: false,
+  },
 }

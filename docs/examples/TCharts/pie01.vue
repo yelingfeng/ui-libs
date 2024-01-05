@@ -3,19 +3,22 @@
     <t-layout-page-item>
       <div class="box-chart">
         <t-charts
-        :options="opt"
-        :data="echartData"
-        chart-type="pie"
-        sub-chart-type="pie01"
-      />
+          ref="charts"
+          :options="opt"
+          :data="echartData"
+          chart-type="pie"
+          sub-chart-type="pie01"
+        />
       </div>
     </t-layout-page-item>
   </t-layout-page>
 </template>
 
 <script setup lang="ts" name="Pie">
-const opt:any = {}
-const echartData:any = [
+import { shallowRef, onMounted } from 'vue'
+const opt: any = {}
+const charts: any = shallowRef(null)
+const echartData: any = [
   {
     name: 'A类',
     value: '3720',

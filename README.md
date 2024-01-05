@@ -43,10 +43,3 @@ compilerOptions：{
 > #### 把项目的vite版本升级到4+
 
 
-## 安装依赖
-> ### 注意: 本地环境版本最好安装 [Node.js 16.x+](https://nodejs.org/en)、[pnpm 7.x+](https://github.com/pnpm/pnpm/)
-
-```shell
-npm install -g pnpm
-
-pnpm install

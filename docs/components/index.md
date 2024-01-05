@@ -11,7 +11,7 @@
 ```bash:no-line-numbers
 npm install @pandora/ui-libs -S
 &
-pnpm add @pandora/ui-libs -S
+yarn add @pandora/ui-libs -S
 ```
 
 

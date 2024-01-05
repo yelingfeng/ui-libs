@@ -1,4 +1,4 @@
-<script lang="ts" >
+<script lang="ts">
 import {
   onMounted,
   onBeforeUnmount,
@@ -16,7 +16,9 @@ import {
   getCurrentInstance,
   type InjectionKey,
 } from 'vue-demi'
-import { init as initChart } from 'echarts/core'
+import * as core from 'echarts/core'
+const { init } = core
+
 import type {
   EChartsType,
   ThemeInjection,
@@ -83,10 +85,14 @@ export default defineComponent({
       data,
       chartType,
       subChartType,
+      isSelect
     } = toRefs(props)
 
     const realTheme = computed(
       () => props.theme || unwrapInjected(defaultTheme, {})
+    )
+    const realSelected = computed(
+      () => props.isSelect
     )
 
     const realOption = computed(
@@ -105,13 +111,14 @@ export default defineComponent({
 
     const nonEventAttrs = computed(() => omitOn(attrs))
 
-    const listeners = getCurrentInstance().proxy.$listeners
+    const listeners = getCurrentInstance()?.proxy?.$listeners || {}
 
-    function init(option?: ChartsOption) {
+
+    function initCore(option?: ChartsOption) {
       if (!root.value) {
         return
       }
-      const instance = (chart.value = initChart(
+      const instance = (chart.value = init(
         root.value,
         realTheme.value,
         realInitOptions.value
@@ -140,6 +147,9 @@ export default defineComponent({
             newopt,
             realUpdateOptions.value
           )
+          if(isSelect.value){
+              pieDefaultSelect(0)
+          }
         }
       }
       if (autoresize.value) {
@@ -163,7 +173,7 @@ export default defineComponent({
       }
 
       if (!chart.value) {
-        init(option)
+        initCore(option)
       } else {
         chart.value.setOption(option, updateOptions || {})
       }
@@ -193,7 +203,7 @@ export default defineComponent({
                 return
               }
               if (!chart.value) {
-                init()
+                initCore()
               } else {
                 chart.value.setOption(option, {
                   // mutating `option` will lead to `notMerge: false` and
@@ -213,10 +223,10 @@ export default defineComponent({
     )
 
     watch(
-      [realTheme, realInitOptions],
+      [realTheme, realInitOptions,realSelected],
       () => {
         cleanup()
-        init()
+        initCore()
       },
       {
         deep: true,
@@ -227,6 +237,7 @@ export default defineComponent({
         chart.value.group = props.group
       }
     })
+
 
     watch(data, function (newval, oldval) {
       if (newval && newval.length) {
@@ -243,7 +254,7 @@ export default defineComponent({
     const publicApi = usePublicAPI(chart)
 
     onMounted(() => {
-      init()
+      initCore()
     })
 
     onBeforeUnmount(() => {
@@ -257,12 +268,66 @@ export default defineComponent({
         cleanup()
       }
     })
+    /**
+     * 饼图动态选中方法
+     * @param index
+     */
+    function pieDefaultSelect(index:number){
+      const chartVM:any= chart.value
+
+      // 渲染完成
+      chartVM.on('finished', ()=> {
+        //默认选中
+        chartVM.dispatchAction({
+              type: 'highlight',
+              seriesIndex: 0,
+              dataIndex: index
+            })
+      });
+
+      //hover选中
+      chartVM.on('mouseover', function(e) {
+        if (e.dataIndex != index) {
+          chartVM.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: index
+          })
+        }
+      })
+      chartVM.on('mouseout', function(e) {
+        index = e.dataIndex
+        chartVM.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: e.dataIndex
+        })
+      })
+
+      //点击选中
+      chartVM.on('click', function(e) {
+        if (e.dataIndex != index) {
+          chartVM.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: index
+          })
+        }
+        index = e.dataIndex
+        chartVM.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: e.dataIndex
+        })
+      })
+    }
 
     return {
       chart,
       root,
       nonEventAttrs,
       register,
+      pieDefaultSelect,
       ...publicApi,
     }
   },
@@ -284,9 +349,9 @@ export default defineComponent({
 </script>
 <style>
 pandora-charts {
-  display: block;
+  display: flex;
   width: 100%;
   height: 100%;
-  min-width: 0;
+  min-width: 100px;
 }
 </style>

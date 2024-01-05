@@ -37,3 +37,20 @@ export interface DataZoomType {
   show?: boolean
   start?: number
 }
+
+
+/**
+ * 原始数据类型
+ */
+export type OriginData<T> = {
+  [index: number]: T | null
+}
+/**
+ *  自动Resize刷新
+ */
+export type AutoresizeProp =
+  | boolean
+  | {
+      throttle?: number
+      onResize?: () => void
+    }

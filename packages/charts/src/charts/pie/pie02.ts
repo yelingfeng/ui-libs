@@ -56,10 +56,7 @@ export const build = (originData: any): EChartsOption => {
     '#D05CFF',
     '#FF63AD',
   ]
-  const { category, series } = transformPieDataToSeries(
-    originData,
-    colors
-  )
+  const { category, series } = transformPieDataToSeries(originData, colors)
   // console.log(category, series)
 
   const label = {
@@ -78,15 +75,7 @@ export const build = (originData: any): EChartsOption => {
       },
     },
     formatter: function (params: any) {
-      return [
-        '{a|' +
-          params.percent +
-          '}' +
-          '\n' +
-          '{b|' +
-          params.name +
-          '}',
-      ]
+      return ['{a|' + params.percent + '}' + '\n' + '{b|' + params.name + '}']
     },
   }
   const legend = {
@@ -97,6 +86,7 @@ export const build = (originData: any): EChartsOption => {
     bottom: 20,
     itemWidth: 8,
     itemHeight: 8,
+    selectedMode: false,
     align: 'left',
     textStyle: {
       fontSize: 12,
